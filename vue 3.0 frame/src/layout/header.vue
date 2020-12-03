@@ -29,17 +29,17 @@
 export default {
   data() {
     return {
-      username: "",
+      username: '',
       timer: null,
-    };
+    }
   },
   methods: {
     // handle drow
     handleCommandSort: function (e) {
-      console.log(e);
+      console.log(e)
     },
   },
-};
+}
 </script>
 <style scoped lang="scss">
 .vheader {

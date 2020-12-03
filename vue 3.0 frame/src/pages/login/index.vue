@@ -2,9 +2,10 @@
   <div class="login-container">
     <div class="center-group">
       <el-form
-        :model="loginData"
+        :model="form"
         status-icon
         ref="ruleForm"
+        :rules="rules"
         label-position="left"
         label-width="60px"
         class="login-form-group"
@@ -16,29 +17,28 @@
           </div>
         </el-form-item>
         <el-form-item prop="account" label-width="0">
-          <el-input v-model.trim="loginData.account" placeholder="请输入用户名" ref="el">
+          <el-input v-model="form.account" ref="el" placeholder="请输入账号">
             <i slot="prefix" class="el-input__icon el-icon-user"></i>
           </el-input>
         </el-form-item>
-        <el-form-item prop="password" style="min-height:60px" label-width="0">
+        <el-form-item prop="password" style="min-height: 60px" label-width="0">
           <el-input
             type="password"
-            v-model.trim="loginData.password"
+            v-model="form.password"
             auto-complete="off"
             show-password
             placeholder="请输入密码"
           >
             <i slot="prefix" class="el-input__icon el-icon-lock"></i>
           </el-input>
-          <div class="forget-password" @click="forgetPassword">忘记密码？</div>
         </el-form-item>
         <el-form-item label-width="0">
           <el-button
             :loading="showLoading"
-            :disabled="disable"
             native-type="submit"
             class="login-button"
-          >登录</el-button>
+            >登录</el-button
+          >
         </el-form-item>
       </el-form>
     </div>
@@ -47,55 +47,50 @@
 
 <script>
 export default {
-  name: "login",
-  // watch: {
-  //   loginData: {
-  //     deep: true,
-  //     handler(newval) {
-  //       if (newval.account != "" && newval.password != "") {
-  //         this.disable = false;
-  //       }
-  //     },
-  //   },
-  // },
+  name: 'login',
+
   data() {
     return {
       disable: false,
       showLoading: false,
-      loginData: {
-        password: "",
-        account: "",
+      form: {
+        account: '',
+        password: '',
       },
-    };
+      rules: {
+        account: [{ required: true, message: '请输入账号', trigger: 'blur' }],
+        password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
+      },
+    }
   },
   mounted() {
-    this.$refs.el.focus();
+    this.$refs.el.focus()
   },
   methods: {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.login();
+          this.login()
         } else {
-          return false;
+          return false
         }
-      });
+      })
     },
     goHome() {
-      this.$router.push("/home");
+      this.$router.push('/home')
     },
     login() {
-      this.showLoading = true;
+      this.showLoading = true
       setTimeout(() => {
-        this.showLoading = false;
-        this.goHome();
-      }, 1000);
+        this.showLoading = false
+        this.goHome()
+      }, 1000)
     },
     forgetPassword() {
-      this.$message("请联系管理员！");
+      this.$message('请联系管理员！')
     },
   },
-};
+}
 </script>
 
 <style lang="scss">
@@ -105,54 +100,57 @@ export default {
   padding: 0;
   width: 100%;
   height: 100%;
-  background: url("../../assets/img/login_bg.png") no-repeat center center;
+  background: url('../../assets/img/login_bg_pic.jpg') no-repeat center center;
   background-size: cover;
   background-attachment: fixed;
   overflow: hidden;
 }
 .center-group {
   position: absolute;
-  top: 0;
+  top: 30vw;
   bottom: 0;
   right: 16%;
   width: 28%;
   height: 50%;
-  min-width: 328px;
-  min-height: 382px;
+  min-width: 28vw;
+  min-height: 50vw;
   margin: auto;
-  background: url("../../assets/img/login_form_group_bg.png");
+  background: url('../../assets/img/login_form_group_bg.png');
   background-size: 100%;
   background-repeat: no-repeat;
+  /deep/ .el-input--prefix .el-input__inner {
+    background: #040e32;
+    color: #fff;
+  }
 }
 .login-form-group {
   position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  width: 100%;
-  height: 100%;
+  justify-content: space-around;
+  width: 28vw;
+  height: 20vw;
+  margin-top: 7vw;
   align-items: center;
+  /deep/ .el-form-item__error {
+    left: 15%;
+  }
 }
+
 .el-form-item {
   position: relative;
   width: 100%;
 }
-.forget-password {
-  cursor: pointer;
-  position: absolute;
-  color: #eee;
-  right: 15%;
-}
+
 .login-title {
-  font-size: 24px;
   width: 100%;
   padding-bottom: 10px;
   text-align: center;
-  color: #fff;
 }
 .login-form-group .el-input {
   width: 70%;
   margin-left: 15%;
+  height: 40%;
 }
 .login-button {
   background: $auto_error_color;
@@ -165,37 +163,6 @@ export default {
   &:hover {
     opacity: 1;
     background: $auto_error_color;
-  }
-}
-
-.login-form-group .el-input__inner {
-  background-color: #03143a;
-  border-color: #4a90e2;
-  &::placeholder {
-    color: #757f94;
-  }
-  &:focus {
-    color: #ffffff;
-  }
-
-  &::-webkit-input-placeholder {
-    /* WebKit browsers 适配谷歌 */
-    color: #757f94;
-  }
-
-  &:-moz-placeholder {
-    /* Mozilla Firefox 4 to 18 适配火狐 */
-    color: #757f94;
-  }
-
-  &::-moz-placeholder {
-    /* Mozilla Firefox 19+ 适配火狐 */
-    color: #757f94;
-  }
-
-  &:-ms-input-placeholder {
-    /* Internet Explorer 10+  适配ie*/
-    color: #757f94;
   }
 }
 </style>

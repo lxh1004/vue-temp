@@ -1,8 +1,11 @@
 <template>
   <div class="main_container">
-    <el-aside :width="isCollapse?'60px':'200px'">
-      <div @click="toggleCollapse" :class="[isCollapse?'toggle-button-act':'toggle-button']">
-        <i :class="[!isCollapse?'el-icon-s-fold':'el-icon-s-unfold']"></i>
+    <el-aside :width="isCollapse ? '60px' : '200px'">
+      <div
+        @click="toggleCollapse"
+        :class="[isCollapse ? 'toggle-button-act' : 'toggle-button']"
+      >
+        <i :class="[!isCollapse ? 'el-icon-s-fold' : 'el-icon-s-unfold']"></i>
       </div>
       <el-menu
         :default-active="currentroute"
@@ -18,28 +21,8 @@
           <span slot="title">用户管理</span>
         </el-menu-item>
         <el-menu-item index="/home/project">
-          <i class="el-icon-menu"></i>
-          <span slot="title">项目管理</span>
-        </el-menu-item>
-        <el-menu-item index="/home/need">
-          <i class="el-icon-s-claim"></i>
-          <span slot="title">需求管理</span>
-        </el-menu-item>
-        <el-menu-item index="/home/employ">
           <i class="el-icon-user-solid"></i>
-          <span slot="title">用例管理</span>
-        </el-menu-item>
-        <el-menu-item index="/home/defect">
-          <i class="el-icon-menu"></i>
-          <span slot="title">BUG管理</span>
-        </el-menu-item>
-        <el-menu-item index="/home/person">
-          <i class="el-icon-s-claim"></i>
-          <span slot="title">用户中心</span>
-        </el-menu-item>
-        <el-menu-item index="/home/overall">
-          <i class="el-icon-s-claim"></i>
-          <span slot="title">整体概览</span>
+          <span slot="title">项目管理</span>
         </el-menu-item>
       </el-menu>
     </el-aside>
@@ -50,30 +33,30 @@
 export default {
   computed: {
     currentroute() {
-      return this.$route.path.split("/").slice(0, 3).join("/");
+      return this.$route.path.split('/').slice(0, 3).join('/')
     },
   },
   data() {
     return {
       isCollapse: false,
       // 被激活的链接地址
-      activePath: "",
-    };
+      activePath: '',
+    }
   },
   methods: {
     toggleCollapse() {
-      this.isCollapse = !this.isCollapse;
+      this.isCollapse = !this.isCollapse
     },
     // 保存链接的激活状态
     saveNavState(activePath) {
-      window.sessionStorage.setItem("activePath", activePath);
-      this.activePath = activePath;
+      window.sessionStorage.setItem('activePath', activePath)
+      this.activePath = activePath
     },
     handleSelect(key, keyPath) {
-      console.log(key, keyPath);
+      // console.log(key, keyPath)
     },
   },
-};
+}
 </script>
 <style scoped lang="scss">
 .main_container .el-menu {

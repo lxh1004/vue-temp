@@ -4,12 +4,20 @@
       <el-row>
         <el-col :span="6">
           <el-form-item label="项目负责人">
-            <el-input v-model.trim="userForm.user" placeholder="请输入" size="mini"></el-input>
+            <el-input
+              v-model.trim="userForm.user"
+              placeholder="请输入"
+              size="mini"
+            ></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="6">
           <el-form-item label="项目">
-            <el-select v-model="userForm.region" size="mini" placeholder="请选择">
+            <el-select
+              v-model="userForm.region"
+              size="mini"
+              placeholder="请选择"
+            >
               <el-option label="管理员" value="shanghai"></el-option>
               <el-option label="项目负责人" value="beijing"></el-option>
               <el-option label="开发" value="shanghai"></el-option>
@@ -21,7 +29,11 @@
         </el-col>
         <el-col :span="6">
           <el-form-item label="子项目">
-            <el-select v-model="userForm.region" size="mini" placeholder="请选择">
+            <el-select
+              v-model="userForm.region"
+              size="mini"
+              placeholder="请选择"
+            >
               <el-option label="启用" value="shanghai"></el-option>
               <el-option label="禁用" value="beijing"></el-option>
             </el-select>
@@ -29,7 +41,9 @@
         </el-col>
         <el-col :span="6" class="project_search">
           <el-form-item>
-            <el-button type="danger" size="mini" @click="onSubmit">查询</el-button>
+            <el-button type="danger" size="mini" @click="onSubmit"
+              >查询</el-button
+            >
             <el-button size="mini">重置</el-button>
           </el-form-item>
         </el-col>
@@ -38,11 +52,12 @@
     <div class="page-operate-btn-group">
       <el-button
         type="text"
-        style="color:#626262"
+        style="color: #626262"
         icon="el-icon-document-add"
         @click="createUser"
         size="medium"
-      >新建项目</el-button>
+        >新建项目</el-button
+      >
     </div>
     <auto-table
       :data="tableData"
@@ -75,11 +90,11 @@
 </template>
 
 <script>
-import autoTable from "@/components/AutoTable";
-import common from "@/mixins/pagination";
-import ProjectPopUp from "./components/projectPopUp";
+import autoTable from '@/components/table'
+import common from '@/mixins/pagination'
+import ProjectPopUp from './components/projectPopUp'
 export default {
-  name: "project",
+  name: 'project',
   components: {
     autoTable,
     ProjectPopUp,
@@ -88,101 +103,101 @@ export default {
   data() {
     return {
       userForm: {
-        user: "",
-        region: "",
+        user: '',
+        region: '',
       },
       columns: [
         {
-          attrName: "name",
-          label: "项目",
+          attrName: 'name',
+          label: '项目',
         },
         {
-          attrName: "roleId",
-          label: "子项目",
+          attrName: 'roleId',
+          label: '子项目',
         },
         {
-          attrName: "status",
-          label: "项目负责人",
+          attrName: 'status',
+          label: '项目负责人',
         },
         {
-          attrName: "bug",
-          label: "BUG管理",
+          attrName: 'bug',
+          label: 'BUG管理',
         },
       ],
       operation: [
         {
-          operateName: "编辑",
-          opreatetype: "edit",
-          icon: "el-icon-edit-outline",
+          operateName: '编辑',
+          opreatetype: 'edit',
+          icon: 'el-icon-edit-outline',
         },
       ],
       tableData: [],
-      userPopTitle: "",
+      userPopTitle: '',
       showDelDialog: false,
       newUserData: {
-        id: "",
-        name: "", //项目
-        account: "", //子项目
+        id: '',
+        name: '', //项目
+        account: '', //子项目
         roleId: [], //开发
         taskUserVOs: [], //测试
         phoneNum: [], //产品
         status: [], //算法
-        description: "",
+        description: '',
         flag: false,
       },
-    };
+    }
   },
   created() {
-    this.init();
+    this.init()
   },
   methods: {
     init() {
       for (let i = 1; i < 11; i++) {
         let item = {
           projectId: i,
-          name: "三现" + i,
-          roleId: "6S" + i,
-          status: "小王" + i,
-          bug: "一堆" + i,
-        };
-        this.tableData.push(item);
+          name: '三现' + i,
+          roleId: '6S' + i,
+          status: '小王' + i,
+          bug: '一堆' + i,
+        }
+        this.tableData.push(item)
       }
     },
     onSubmit() {
-      console.log("submit!");
+      console.log('submit!')
     },
     // 改变页数
     handleCurrentChange(val) {},
     // 改变条数
     handleSizeChange(val) {},
     createUser() {
-      this.userPopTitle = "新建项目";
-      this.showDelDialog = true;
+      this.userPopTitle = '新建项目'
+      this.showDelDialog = true
     },
     //新建用户
     createUserData(value) {},
     //编辑用户
     editUser(value) {},
     dataOperation(event) {
-      if (event.type === "edit") {
-        this.userPopTitle = "编辑项目";
-        this.showDelDialog = true;
-        console.log(event.value, "需要操作的数据");
+      if (event.type === 'edit') {
+        this.userPopTitle = '编辑项目'
+        this.showDelDialog = true
+        console.log(event.value, '需要操作的数据')
       }
     },
     clearFormModel() {
       this.newUserData = {
-        id: "",
-        name: "", //用户名
-       roleId: [], //开发
+        id: '',
+        name: '', //用户名
+        roleId: [], //开发
         taskUserVOs: [], //测试
         phoneNum: [], //产品
         status: [], //算法
         flag: false,
-      };
+      }
     },
   },
-};
+}
 </script>
 <style scoped>
 .user-container {

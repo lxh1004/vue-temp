@@ -1,127 +1,133 @@
 <template>
-  <div class="table-container">
+  <div>
+    <!-- 中部列表表格 -->
     <el-table
-      :data="data"
-      style="width: 100%"
+      :data="tableData"
       :header-cell-style="tableHeaderColor"
+      highlight-current-row
       border
     >
-      <el-table-column type="selection" align="center" width="50"></el-table-column>
-      <el-table-column type="index" align="center" label="序号" :width="numWidth"></el-table-column>
+      <el-table-column
+        type="selection"
+        width="50"
+        align="center"
+        v-if="gg ? true : false"
+      ></el-table-column>
+      <el-table-column
+        label="序号"
+        type="index"
+        width="50"
+        align="center"
+      ></el-table-column>
       <el-table-column
         align="center"
-        v-for="(item,index) in columns"
+        v-for="(itemtest, index) in title"
         :key="index"
-        :sortable="item.sort"
-        :prop="item.attrName"
-        :label="item.label"
-        :width="item.width"
+        v-if="!itemtest.operate"
+        :sortable="itemtest.sort"
+        :prop="itemtest.attrName"
+        :label="itemtest.label"
+        :width="itemtest.width"
       >
         <template slot-scope="scope">
           <div class="table-item-group">
-            <span
-              v-if="item.isType==='status'"
-              :class="[scope.row[item.attrName]===1?'status-dot-grean':'status-dot-red']"
-            ></span>
+            <!-- 配置启用禁用的颜色 -->
+            <i
+              v-if="itemtest.isType === 'status'"
+              :class="[
+                scope.row[itemtest.prop] === 1
+                  ? 'status-dot-grean'
+                  : 'status-dot-red',
+              ]"
+              class="el-icon-message-solid"
+            ></i>
+            <!-- 表格中具体的某一项点击事件 -->
             <span
               class="btn-type"
-              v-if="item.eventType"
-              @click="operateType(item.eventType,scope.row)"
-            >{{checkType(item.isType,scope.row[item.attrName])}}</span>
-            <span class="normal-text" v-else>{{checkType(item.isType,scope.row[item.attrName])}}</span>
+              v-if="itemtest.eventType"
+              @click="operateType(itemtest.eventType, scope.row, scope.$index)"
+              >{{ checkType(itemtest.isType, scope.row[itemtest.prop]) }}</span
+            >
+            <!-- 正常表格渲染数据 -->
+            <span class="normal-text" v-else>{{
+              checkType(itemtest.isType, scope.row[itemtest.prop])
+            }}</span>
           </div>
         </template>
       </el-table-column>
-      <el-table-column v-if="operation.length>0" align="center" label="操作" :width="operationWidth">
+      <el-table-column
+        v-else
+        :label="itemtest.label"
+        :width="itemtest.width"
+        :prop="itemtest.prop"
+        align="center"
+      >
         <template slot-scope="scope">
-          <span
-            v-for="(item,index) in operation"
-            :key="index"
-            class="opreate-btn"
-            @click="operateType(item.opreatetype,scope.row,scope.$index)"
-          >
-            <i :class="[item.icon]"></i>
-          </span>
+          <slot
+            :name="itemtest.prop"
+            :$index="scope.$index"
+            :row="scope.row"
+          ></slot>
+          <!-- 对应slot name -->
         </template>
       </el-table-column>
     </el-table>
   </div>
 </template>
-
 <script>
 export default {
-  name: "",
+  name: 'tabletable',
   props: {
-    columns: {
+    title: {
       type: Array,
-      default: () => [],
+      default: [],
     },
-    data: {
+    tableData: {
       type: Array,
-      default: () => [],
+      default: [],
     },
-    operation: {
-      type: Array,
-      default: () => [],
-    },
-
-    operationWidth: {
-      type: Number,
-      default: () => 0,
-    },
-    numWidth: {
-      type: Number,
-      default: () => 0,
-    },
+    gg: Boolean,
   },
-  data() {
-    return {};
-  },
-  components: {},
-  mounted() {},
   methods: {
     // 修改table header的背景色
     tableHeaderColor() {
-      return "background-color: #F4F4F4;";
+      return 'background-color: #F4F4F4;'
     },
     operateType(type, value, index) {
-      this.$emit("operate", { type: type, value: value, index: index });
+      this.$emit('operate', { type: type, value: value, index: index })
     },
-
     checkType(type, value) {
-      let label = "";
+      let label = ''
       switch (type) {
-        case "teskType": //测试任务类型
+        case 'teskType': //测试任务类型
           if (value === 1) {
-            label = "功能测试";
+            label = '功能测试'
           } else if (value === 2) {
-            label = "性能测试";
+            label = '性能测试'
           } else if (value === 3) {
-            label = "稳定性测试";
+            label = '稳定性测试'
           }
-          break;
-        case "status": //状态：是否启用
+          break
+        case 'status': //状态：是否启用
           if (value == 1) {
-            label = "启用";
+            label = '启用'
           } else {
-            label = "禁用";
+            label = '禁用'
           }
-          break;
+          break
         default:
-          label = value;
+          label = value
       }
-      return label;
+      return label
     },
   },
-};
-</script>
-	
-<style scoped lang="scss">
-.table-container {
-  position: relative;
-  width: 100%;
 }
+</script>
 
+<style scoped lang="scss">
+.normal-text {
+  color: $title_color;
+}
 .btn-type {
   color: $title_color;
   cursor: pointer;
@@ -129,31 +135,19 @@ export default {
     color: $auto_primary_color;
   }
 }
-.normal-text {
-  color: $title_color;
-}
-.opreate-btn {
-  cursor: pointer;
-  color: $subtitle_color;
-  font-size: 18px;
-  margin-right: 10px;
-  &:hover {
-    opacity: 0.8;
-  }
-}
 .status-dot-grean {
-  background: #6dd400;
-  width: 10px;
-  height: 10px;
-  margin-right: 10px;
-  border-radius: 5px;
+  color: #6dd400;
+  // width: 10px;
+  // height: 10px;
+  // margin-right: 10px;
+  // border-radius: 5px;
 }
 .status-dot-red {
-  background: #e02020;
-  width: 10px;
-  height: 10px;
-  margin-right: 10px;
-  border-radius: 5px;
+  color: #e02020;
+  // width: 10px;
+  // height: 10px;
+  // margin-right: 10px;
+  // border-radius: 5px;
 }
 .table-item-group {
   position: relative;
@@ -163,4 +157,3 @@ export default {
   align-items: center;
 }
 </style>
-

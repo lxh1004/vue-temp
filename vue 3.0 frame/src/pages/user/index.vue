@@ -4,17 +4,32 @@
       <el-row>
         <el-col :span="6">
           <el-form-item label="用户账号">
-            <el-input v-model.trim="userForm.user" clearable placeholder="请输入" size="mini"></el-input>
+            <el-input
+              v-model.trim="userForm.user"
+              clearable
+              placeholder="请输入"
+              size="mini"
+            ></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="6">
           <el-form-item label="用户名">
-            <el-input v-model.trim="userForm.user" clearable size="mini" placeholder="请输入"></el-input>
+            <el-input
+              v-model.trim="userForm.user"
+              clearable
+              size="mini"
+              placeholder="请输入"
+            ></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="6">
           <el-form-item label="用户角色">
-            <el-select v-model="userForm.region" clearable size="mini" placeholder="请选择">
+            <el-select
+              v-model="userForm.region"
+              clearable
+              size="mini"
+              placeholder="请选择"
+            >
               <el-option label="管理员" value="shanghai"></el-option>
               <el-option label="项目负责人" value="beijing"></el-option>
               <el-option label="开发" value="shanghai"></el-option>
@@ -26,7 +41,12 @@
         </el-col>
         <el-col :span="6">
           <el-form-item label="状态">
-            <el-select v-model="userForm.region" clearable size="mini" placeholder="请选择">
+            <el-select
+              v-model="userForm.region"
+              clearable
+              size="mini"
+              placeholder="请选择"
+            >
               <el-option label="启用" value="shanghai"></el-option>
               <el-option label="禁用" value="beijing"></el-option>
             </el-select>
@@ -35,26 +55,57 @@
       </el-row>
       <el-row type="flex" class="row-bg" justify="end">
         <el-col :span="-24">
-            <el-button type="danger" size="mini" @click="onSubmit">查询</el-button>
-            <el-button size="mini">重置</el-button>
+          <el-button type="danger" size="mini" @click="onSubmit"
+            >查询</el-button
+          >
+          <el-button size="mini">重置</el-button>
         </el-col>
       </el-row>
     </el-form>
     <div class="page-operate-btn-group">
       <el-button
         type="text"
-        style="color:#626262"
+        style="color: #626262"
         icon="el-icon-document-add"
         @click="createUser"
         size="medium"
-      >新建用户</el-button>
+        >新建用户</el-button
+      >
     </div>
-    <auto-table
+    <!-- <auto-table
       :data="tableData"
       :columns="columns"
       :operation="operation"
       @operate="dataOperation"
-    ></auto-table>
+    ></auto-table> -->
+    <!-- 中部列表表格 -->
+    <v-Table
+      :tableData="tableData"
+      :title="columns"
+      @operate="dataOperation"
+      :gg="false"
+    >
+      <template slot="dealScreenshot" slot-scope="scope">
+        <el-button
+          size="small"
+          type="text"
+          @click="handleRowEdit(scope.$index, scope.row)"
+          >查看</el-button
+        >
+        <el-button
+          size="small"
+          type="text"
+          @click="handleRowEdit(scope.$index, scope.row)"
+          >编辑</el-button
+        >
+        <el-button
+          size="small"
+          type="text"
+          @click="handleRowEdit(scope.$index, scope.row)"
+          >删除</el-button
+        >
+      </template>
+    </v-Table>
     <div class="pagination-right">
       <el-pagination
         @size-change="handleSizeChange"
@@ -80,110 +131,116 @@
 </template>
 
 <script>
-import autoTable from "@/components/AutoTable";
-import common from "@/mixins/pagination";
-import UserPopUp from "./components/userPopUp";
+import vTable from '@/components/AutoTable'
+import common from '@/mixins/pagination'
+import UserPopUp from './components/userPopUp'
 export default {
-  name: "user",
+  name: 'user',
   components: {
-    autoTable,
+    vTable,
     UserPopUp,
   },
   mixins: [common],
   data() {
     return {
       userForm: {
-        user: "",
-        region: "",
+        user: '',
+        region: '',
       },
       columns: [
         {
-          attrName: "name",
-          label: "用户名",
+          prop: 'name',
+          label: '用户名',
         },
         {
-          attrName: "roleId",
-          label: "用户角色",
+          prop: 'roleId',
+          label: '用户角色',
+          eventType: 'type',
         },
         {
-          attrName: "status",
-          label: "用户状态",
-          isType: "status",
+          prop: 'status',
+          label: '用户状态',
+          isType: 'status',
+        },
+        {
+          prop: 'dealScreenshot', //要与上面预留的slot位置一致
+          label: '操作',
+          operate: true,
         },
       ],
       operation: [
         {
-          operateName: "编辑",
-          opreatetype: "edit",
-          icon: "el-icon-edit-outline",
+          operateName: '编辑',
+          opreatetype: 'edit',
+          icon: 'el-icon-edit-outline',
         },
       ],
       tableData: [],
-      userPopTitle: "",
+      userPopTitle: '',
       showDelDialog: false,
       newUserData: {
-        id: "",
-        name: "", //用户名
-        account: "", //姓名
+        id: '',
+        name: '', //用户名
+        account: '', //姓名
         roleId: [], //角色
         taskUserVOs: [], //技能
-        phoneNum: "",
-        status: "", //状态
+        phoneNum: '',
+        status: '', //状态
         flag: false,
       },
-    };
+    }
   },
   created() {
-    this.init();
+    this.init()
   },
   methods: {
     init() {
       for (let i = 1; i < 11; i++) {
         let item = {
           projectId: i,
-          name: "王二小" + i,
-          roleId: "管理员" + i,
-          status: 1,
-        };
-        this.tableData.push(item);
+          name: '王二小' + i,
+          roleId: '管理员' + i,
+          status: 0,
+        }
+        this.tableData.push(item)
       }
     },
+
+    handleRowEdit(val, row) {
+      console.log(row)
+    },
     onSubmit() {
-      console.log("submit!");
+      console.log('submit!')
     },
     // 改变页数
     handleCurrentChange(val) {},
     // 改变条数
     handleSizeChange(val) {},
     createUser() {
-      this.userPopTitle = "新建用户";
-      this.showDelDialog = true;
+      this.userPopTitle = '新建用户'
+      this.showDelDialog = true
     },
     //新建用户
     createUserData(value) {},
     //编辑用户
     editUser(value) {},
     dataOperation(event) {
-      if (event.type === "edit") {
-        this.userPopTitle = "编辑用户";
-        this.showDelDialog = true;
-        console.log(event.value, "需要操作的数据");
-      }
+      console.log(event)
     },
     clearFormModel() {
       this.newUserData = {
-        id: "",
-        name: "", //用户名
-        account: "", //姓名
+        id: '',
+        name: '', //用户名
+        account: '', //姓名
         roleId: [], //角色
-        phoneNum: "", //手机号
+        phoneNum: '', //手机号
         taskUserVOs: [], //技能
-        status: "", //状态
+        status: '', //状态
         flag: false,
-      };
+      }
     },
   },
-};
+}
 </script>
 <style scoped>
 .user-container {

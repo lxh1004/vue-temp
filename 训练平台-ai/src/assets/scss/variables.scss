@@ -1,0 +1,77 @@
+$title_color: #333;
+$subtitle_color: #666;
+$type_color: #999;
+$head_color: #051941;
+$nav_bg_color: #051941;
+$nav_item_bg_color: #15284c;
+$nav_item_active: #133d75;
+
+$success_color: #67c23a;
+$warning_color: #e6a23c;
+$auto_danger_color: #f56c6c;
+$auto_primary_color: #409eff;
+$auto_info_color: #909399;
+
+$table_head_color: #f3f3f3;
+$check_form_label_color: #6f6f6f;
+
+$node_select_color: rgba(227, 244, 255, 0.9);
+
+$line_color: #e3e3e3;
+
+/*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    background-color: #f5f5f5 !important;
+}
+
+/*定义滚动条轨道 内阴影+圆角*/
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    background-color: #fff;
+}
+
+/*定义滑块 内阴影+圆角*/
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: $auto_primary_color;
+}
+
+/*::-webkit-scrollbar 滚动条整体部分，可以设置宽度啥的
+::-webkit-scrollbar-button 滚动条两端的按钮
+::-webkit-scrollbar-track  外层轨道
+::-webkit-scrollbar-track-piece  内层滚动槽
+::-webkit-scrollbar-thumb 滚动的滑块
+::-webkit-scrollbar-corner 边角
+::-webkit-resizer 定义右下角拖动块的样式*/
+
+/**
+* 改造弹框的公共样式
+*/
+/deep/ .el-dialog__footer {
+    padding: 0 20px;
+    height: 60px;
+    line-height: 60px;
+    background: $table_head_color;
+}
+/deep/ .el-dialog__header {
+    padding: 0 15px;
+    height: 50px;
+    line-height: 50px;
+    align-items: center;
+    border-bottom: 1px solid $line_color;
+}
+
+/deep/ .el-select {
+    width: 100%;
+}
+
+html,
+body {
+    box-sizing: border-box;
+}
